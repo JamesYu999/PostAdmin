@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -22,6 +24,7 @@ import com.james.assign.util.Constants;
 
 @Service
 public class UserPostService {
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -39,9 +42,11 @@ public class UserPostService {
 
 		if (!CollectionUtils.isEmpty(users)) {
 			//Query for 1 user only
-			if (users.size() == 1) {
+			if (id != null) {
+				logger.info("Performing query for user id: " + id);
 				posts = getPostList(id);
 			} else {
+				logger.info("Performing query for all users.");
 				posts = getPostList(null);
 			}
 		}
@@ -55,6 +60,7 @@ public class UserPostService {
 			});
 		}
 
+		logger.info("Total " + (CollectionUtils.isEmpty(userPosts) ? "0" : userPosts.size()) + " records found.");
 		return userPosts;
 
 	}

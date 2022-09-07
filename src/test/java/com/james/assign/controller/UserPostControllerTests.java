@@ -26,6 +26,7 @@ import com.james.assign.dto.Post;
 import com.james.assign.dto.User;
 import com.james.assign.dto.UserPost;
 import com.james.assign.service.UserPostService;
+import com.james.assign.util.Constants;
 
 @ExtendWith(MockitoExtension.class)
 public class UserPostControllerTests extends AbstractTest {
@@ -44,7 +45,7 @@ public class UserPostControllerTests extends AbstractTest {
 	@Test
 	public void getUserPostsTestWithoutUserIdTest() throws Exception {
 		when(mockUserPostService.getUserPostList(null)).thenReturn(getUserPostForAll());
-		String uri = "/admin/getUserPosts";
+		String uri = Constants.API_WITH_VERSION + "/admin/getUserPosts";
 		MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(uri)).andReturn();
 		assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
 		assertEquals(mapToJson(getUserPostForAll()), mvcResult.getResponse().getContentAsString());
@@ -54,7 +55,7 @@ public class UserPostControllerTests extends AbstractTest {
 	@Test
 	public void getUserPostsTestWithUserIdTest() throws Exception {
 		when(mockUserPostService.getUserPostList(1L)).thenReturn(getUserPostForUser1());
-		String uri = "/admin/getUserPosts?id=1";
+		String uri = Constants.API_WITH_VERSION + "/admin/getUserPosts?id=1";
 		MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(uri)).andReturn();
 		assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
 		assertEquals(mapToJson(getUserPostForUser1()), mvcResult.getResponse().getContentAsString());
@@ -65,7 +66,7 @@ public class UserPostControllerTests extends AbstractTest {
 	public void getUserPostsTestWithNonExistingUserIdTest() throws Exception {
 		List<UserPost> emptyList = new ArrayList<UserPost>();
 		when(mockUserPostService.getUserPostList(0L)).thenReturn(emptyList);
-		String uri = "/admin/getUserPosts?id=0";
+		String uri = Constants.API_WITH_VERSION + "/admin/getUserPosts?id=0";
 		MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(uri)).andReturn();
 		assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
 		assertEquals(mapToJson(emptyList), mvcResult.getResponse().getContentAsString());
