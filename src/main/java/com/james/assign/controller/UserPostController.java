@@ -26,10 +26,10 @@ public class UserPostController {
 	private UserPostService userPostService;
 
 	@GetMapping("/admin/getUserPosts")
-	public ResponseEntity<List<UserPost>> getUserPosts(@RequestParam(value = "id") @Nullable Long id)
+	public ResponseEntity<List<UserPost>> getUserPosts(@RequestParam(value = "userId") @Nullable Long userId)
 			{
 		List<UserPost> userPosts = new ArrayList<>();
-		userPosts = userPostService.getUserPostList(id);
+		userPosts = userPostService.getUserPostList(userId);
 		return ResponseEntity.status(HttpStatus.OK).body(userPosts);
 	}
 }
